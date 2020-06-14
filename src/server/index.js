@@ -62,7 +62,7 @@ const createReservations = async (req, res) => {
 
   await writeTablesToFile(tables);
 
-  res.status(301).redirect("http://localhost:3000/tables");
+  res.status(301).redirect("/tables");
 };
 
 const getWaitingTables = async (req, res) => {

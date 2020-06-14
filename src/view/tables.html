@@ -62,7 +62,7 @@
     <script>
       $(document).ready(function () {
         const options = {
-          url: "http://localhost:3000/api/tables",
+          url: "/api/tables",
           method: "GET",
         };
         const callback = (data) => {
@@ -94,7 +94,7 @@
       });
       $("#delete-tables").click(() => {
         const options = {
-          url: "http://localhost:3000/api/tables",
+          url: "/api/tables",
           method: "DELETE",
         };
         const callback = () => {
