@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Hot Restaurant</title>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="jumbotron text-center">
+        <h1 class="display-4">
+          Hot Restaurant
+        </h1>
+        <hr class="my-4" />
+        <h3>
+          Current Reservations and Waiting List
+        </h3>
+        <div class="mt-4">
+          <a href="/reserve">
+            <button type="button" class="btn btn-danger p-3 font-weight-bold">
+              Make Reservation
+            </button>
+          </a>
+          <a href="/">
+            <button type="button" class="btn btn-primary p-3 font-weight-bold">
+              Home
+            </button>
+          </a>
+        </div>
+      </div>
+      <div class="mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h3>Current Reservations</h3>
+          </div>
+          <div class="card-body" id="reservations"></div>
+        </div>
+      </div>
+      <div class="mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h3>Waiting List</h3>
+          </div>
+          <div class="card-body" id="waiting-list"></div>
+        </div>
+      </div>
+      <div class="m-4">
+        <button id="delete-tables" class="btn btn-danger">
+          DELETE Tables
+        </button>
+        <a href="/api/tables" class="card-link">GET Tables</a>
+        <a href="/api/waitingTables" class="card-link">GET Waiting List</a>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        const options = {
+          url: "http://localhost:3000/api/tables",
+          method: "GET",
+        };
+        const callback = (data) => {
+          const renderCard = (customer, tableNumber) => {
+            const div = $("<div>").addClass("border p-4");
+            div.html(`
+              <h3>Reservation Table #${tableNumber}</h3>
+              <hr />
+              <div><strong>ID: </strong>${customer.id}</div>
+              <div><strong>Name: </strong>${customer.name}</div>
+              <div><strong>Email: </strong>${customer.email}</div>
+              <div><strong>Phone: </strong>${customer.phone}</div>
+            `);
+
+            return div;
+          };
+
+          data.currentReservations.forEach((reservation, index) => {
+            const card = renderCard(reservation, index + 1);
+            $("#reservations").append(card);
+          });
+
+          data.waitingLists.forEach((reservation, index) => {
+            const card = renderCard(reservation, index + 1);
+            $("#waiting-list").append(card);
+          });
+        };
+        $.ajax(options).then(callback);
+      });
+      $("#delete-tables").click(() => {
+        const options = {
+          url: "http://localhost:3000/api/tables",
+          method: "DELETE",
+        };
+        const callback = () => {
+          window.location.reload();
+        };
+        $.ajax(options).then(callback);
+      });
+    </script>
+  </body>
+</html>
