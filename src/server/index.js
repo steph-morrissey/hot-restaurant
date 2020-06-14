@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const { promisify } = require("util");
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
